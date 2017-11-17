@@ -5,9 +5,15 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 class ListValidator extends Validator {
 
     private Integer length
+    private String message
 
     ListValidator size(int length) {
         this.length = length
+        this
+    }
+
+    ListValidator fail(String message) {
+        this.message = message
         this
     }
 
@@ -23,7 +29,7 @@ class ListValidator extends Validator {
                 assert list.size() == length
             }
         } catch (PowerAssertionError e) {
-            throw new ValidationError(e.message, e)
+            throw new ValidationError(message ? message : e.message, e)
         }
     }
 }
